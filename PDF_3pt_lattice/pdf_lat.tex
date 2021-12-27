@@ -1,0 +1,197 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\usepackage{cancel}
+\usepackage[compat=1.0.0]{tikz-feynman} % Feynman diagram
+
+\usepackage{amssymb} % usage of mathbb
+\usepackage{amstext}
+\usepackage{amsmath}
+
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{PDFs and Lattice calculation}
+\author{Yushan and Jinchen}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{Basic logic}
+
+\noindent 
+
+We calculate 3pt correlation on lattice, then extract PDFs from 3pt correlation.
+
+
+\section{Deduction}
+
+\subsection{What is PDFs}
+
+\noindent
+
+sth like 
+
+\[ \left\langle H\left(P_{z}\right)\left|\bar{\psi}(z) \gamma^{t} W(z, 0) \psi(0)\right| H\left(P_{z}\right)\right\rangle \]
+
+*[check out Peskin 18.5.]
+
+\subsection{Calculate PDFs through 3pt correlation}
+
+\noindent
+
+\[ \text{3pt} = \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^3 \vec{y}\left\langle\Omega\left|\hat{O}_{H}\left(\vec{x}, t_{s e p}\right) \hat{O}(\vec{y}, t ; z) \hat{O}_{H}^{\dagger}(0,0)\right| \Omega\right\rangle \]
+
+in which $\hat{O}_{H}$ is projection operator, and 
+
+\[ \hat{O}(\vec{y}, t ; z)=\bar{\psi}(z+\vec{y}, t) \gamma^{t} W(z+\vec{y}, t ; \vec{y}, t) \psi(\vec{y}, t) \]
+
+therefore, ignore $t$ variables for convenient,
+
+\[ \text{3pt} = \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^3 \vec{y}\left\langle\Omega\left|\hat{O}_{H}\left(\vec{x}\right) \sum_{H} \int \frac{d^3 \vec{p'}}{(2\pi)^3}  |H_{\vec{p'}}><H_{\vec{p'}}| \hat{O}(\vec{y}; z) \right. \right. \]
+    
+\[ \left. \left. \sum_{H'} \int \frac{d^3 \vec{p''}}{(2\pi)^3} |H'_{\vec{p''}}><H'_{\vec{p''}}| \hat{O}_{H}^{\dagger}(0)  \right| \Omega\right\rangle \]
+
+with spatial translation operator:
+
+\[ \hat{O}_{H}(\vec{x}) = e^{-i \hat{\vec{p}} \cdot \vec{x}} \hat{O}_{H} e^{i \hat{\vec{p}} \cdot \vec{x}} \]
+
+so,
+
+\[ \text{3pt} = \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^3 \vec{y}\left\langle\Omega\left|\hat{O}_{H} \cdot e^{i \hat{\vec{p}} \cdot \vec{x}} \sum_{H} \int \frac{d^3 \vec{p'}}{(2\pi)^3}  |H_{\vec{p'}}><H_{\vec{p'}}| e^{-i \hat{\vec{p}} \cdot \vec{y}} \cdot \hat{O}(0; z) \cdot e^{i \hat{\vec{p}} \cdot \vec{y}} \right. \right. \]
+    
+\[ \left. \left. \sum_{H'} \int \frac{d^3 \vec{p''}}{(2\pi)^3} |H'_{\vec{p''}}><H'_{\vec{p''}}| \hat{O}_{H}^{\dagger}(0)  \right| \Omega\right\rangle \]
+
+\[= \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^3 \vec{y}\left\langle\Omega\left|\hat{O}_{H} \cdot \sum_{H} \int \frac{d^3 \vec{p'}}{(2\pi)^3} e^{i \vec{p'} \cdot \vec{x}} |H_{\vec{p'}}><H_{\vec{p'}}| e^{-i \vec{p'} \cdot \vec{y}} \cdot \hat{O}(0; z) \right. \right.\]
+
+\[ \left. \left. \sum_{H'} \int \frac{d^3 \vec{p''}}{(2\pi)^3} e^{i \vec{p''} \cdot \vec{y}} |H'_{\vec{p''}}><H'_{\vec{p''}}| \hat{O}_{H}^{\dagger}(0)  \right| \Omega\right\rangle \]
+
+do the integral of $x$ and $y$, then we get,
+
+\[ \text{3pt} = \left\langle\Omega\left|\hat{O}_{H} \cdot \sum_{H} \int d^3 \vec{p'} \delta(\vec{p'} - \vec{p} ) |H_{\vec{p'}}><H_{\vec{p'}}| \hat{O}(0; z)  \sum_{H'} \int d^3 \vec{p''}  \delta(\vec{p'} - \vec{p''}) |H'_{\vec{p''}}><H'_{\vec{p''}}| \hat{O}_{H}^{\dagger}(0)  \right| \Omega\right\rangle \]
+
+\[ = \sum_{H'} \sum_{H} <\Omega |\hat{O}_{H}  |H_{\vec{p}}><H_{\vec{p}}| \hat{O}(0; z) |H'_{\vec{p}}><H'_{\vec{p}}| \hat{O}_{H}^{\dagger}(0) | \Omega> \]
+
+
+then projection operator $\hat{O}_{H}$ will select the hadron with specific quantum numbers, like for $\pi^+$, $\hat{O}_{\pi^+} = \bar{d} \gamma^5 u$.
+
+\[ \text{3pt} = <\Omega |\hat{O}_{H} (0, t_{sep})  |H_{\vec{p}}><H_{\vec{p}}| \hat{O}(0, t; z) |H_{\vec{p}}><H_{\vec{p}}| \hat{O}_{H}^{\dagger}(0) | \Omega> \]
+
+\[ = <\Omega |\hat{O}_{H} (0, t_{\text{sep}})  |H_{\vec{p}}> \cdot \text{PDFs} \cdot <H_{\vec{p}}| \hat{O}_{H}^{\dagger}(0) | \Omega> \]
+
+In order to get $\text{PDFs}$, we also need 2pt correlation function:
+
+\[ \text{2pt} = \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^{3} \vec{y}<\Omega |\hat{O}_{H}\left(\vec{x}, t_{s e p}\right) \hat{O}_{H}^{\dagger}(0,0) | \Omega> \]
+
+\[ = <\Omega |\hat{O}_{H} (0, t_{\text{sep}})  |H_{\vec{p}}>  <H_{\vec{p}}| \hat{O}_{H}^{\dagger}(0, 0) | \Omega> \]
+
+so,
+
+\[ \frac{\text{3pt}}{\text{2pt}} = \left\langle H_{\vec{p}}|\hat{O}(0,0 ; z)| H_{\vec{p}}\right\rangle\left(1+e^{-\Delta E t}+e^{-\Delta E(t_{\text{sep}}-t)}+e^{-\Delta E t_{s e p}}\right) \]
+
+
+\subsection{Calculate 3pt on lattice}
+
+For example,
+
+\[ \text{Projection operator}\ \pi^+: \hat{O}_{\pi^+}\left(\vec{x}, t_{\text {sep }}\right)=\bar{d}\left(\vec{x}, t_{\text {sep }}\right) \gamma^{5} u\left(\vec{x}, t_{\text {sep }}\right) \]
+
+\[ \hat{O}^{\dagger}_{\pi^+}\left(\vec{x}, t_{\text {sep }}\right)=- \bar{u}\left(\vec{x}, t_{\text {sep }}\right) \gamma^{5} d\left(\vec{x}, t_{\text {sep }}\right) \]
+
+\[ \text{Quasi-PDF operator}\ u: \hat{O}(\vec{y}, t ; z)=\bar{u}(z+\vec{y}, t) \gamma^{t} W(z+\vec{y}, t ; \vec{y}, t) u(\vec{y}, t) \]
+
+
+\[ \text{3pt} = \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^3 \vec{y}\left\langle\Omega\left|\hat{O}_{H}\left(\vec{x}, t_{s e p}\right) \hat{O}(\vec{y}, t ; z) \hat{O}_{H}^{\dagger}(0,0)\right| \Omega\right\rangle \]
+
+\[ = \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^3 \vec{y}\left\langle\Omega\left|\bar{d}\left(\vec{x}, t_{\text {sep }}\right) \gamma^{5} u\left(\vec{x}, t_{\text {sep }}\right) \bar{u}(z+\vec{y}, t) \gamma^{t} W(z+\vec{y}, t ; \vec{y}, t) u(\vec{y}, t) \right.\right.\]
+
+\[\left. \left. \cdot ( {\color{red}-} \bar{u}(0, 0) \gamma^{5} d(0, 0) )  \right| \Omega\right\rangle \]
+
+Add trace, then move the $d$ at the end to the beginning. {\color{red} Notice here in the spinor space, this moving just move the column vector forward with trace, so no minus sign, while the $d$ is a dirac field, containing generation annihilation operator (or say it is Grassmann number), so this moving will contribute a minus sign. }
+
+\[ \text{3pt} = \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^3 \vec{y}\left\langle\Omega\left| \text{tr}[ d(0, 0) \bar{d}\left(\vec{x}, t_{\text {sep}}\right) \gamma^{5} u\left(\vec{x}, t_{\text {sep}}\right)   \right.\right.\]
+
+\[\left. \left. \bar{u}(z+\vec{y}, t) \gamma^{t} W(z+\vec{y}, t ; \vec{y}, t) u(\vec{y}, t)  \bar{u}(0, 0) \gamma^{5}  ] \right| \Omega\right\rangle \]
+
+*[ Wick theorem Gattringer P109 (5.36), 2 $d$ fields contract, 4 $u$ have 2 kinds of contraction ]
+
+\[ \text{3pt} = \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \int d^3 \vec{y} \{ \]
+
+\[ \left\langle\Omega\left| \text{tr}[ S_d(0,0;\vec{x},t_{\text{sep}}) \gamma^{5} S_u(\vec{x},t_{\text{sep}};z+\vec{y},t) \gamma^{t} W(z+\vec{y}, t ; \vec{y}, t) S_u(\vec{y},t;0,0) \gamma^{5}  ] \right| \Omega\right\rangle \]
+
+\[ - \left\langle\Omega\left| \text{tr}[ S_d(0,0;\vec{x},t_{\text{sep}}) \gamma^{5} S_u(\vec{x},t_{\text{sep}};0,0) \gamma^{5}] \cdot \text{tr}[ S_u(\vec{y},t;z+\vec{y},t) \gamma^{t} W(z+\vec{y}, t ; \vec{y}, t) ] \right| \Omega\right\rangle \} \]
+
+two terms in the integral represent two diagrams, take the first one as an example.
+
+\[ \int d^3 \vec{y} \left\langle\Omega\left| \text{tr}[  \underline{  \int d^{3} \vec{x} {\color{red} e^{-i \vec{p} \cdot \vec{x}} \gamma^{5}  S_d(0,0;\vec{x},t_{\text{sep}}) \gamma^{5} } S_u(\vec{x},t_{\text{sep}};z+\vec{y},t) }  \gamma^{t} W(z+\vec{y}, t ; \vec{y}, t) S_u(\vec{y},t;0,0)  ] \right| \Omega\right\rangle \]
+
+in which, red part is sequential source, and the underlined part is sequential propagator.
+
+*[ we need to avoid calculating all to all propagator, like $S_u(\vec{x},t_{\text{sep}};z+\vec{y},t)$ (x and y are both integrated) ]
+
+\[ \int d^{3} \vec{x} e^{-i \vec{p} \cdot \vec{x}} \gamma^{5} S_{d}\left(0,0 ; \vec{x}, t_{\text {sep }}\right) \gamma^{5} S_{u}\left(\vec{x}, t_{\text {sep }} ; z+\vec{y}, t\right) \]
+
+\[ = \gamma^5 [\int d^{3} \vec{x} S_{u}\left(z+\vec{y}, t; \vec{x}, t_{\text {sep }} \right) e^{i \vec{p} \cdot \vec{x}} \gamma^{5} S_{d}\left(\vec{x}, t_{\text {sep }}; 0,0 \right) \gamma^{5} ]^{\dagger} \gamma^5 \]
+
+here we used 
+
+\[ {\color{red} \gamma^5 S^{\dagger}(x;y) \gamma^5 = S(y;x) } \]
+
+the $\dagger$ here acts on spinor and color indices.
+
+So, sequential propagator:
+
+\[ \int d^{3} \vec{x} \cdot S_{u}\left(z+\vec{y}, t; \vec{x}, t_{\text {sep }} \right) {\color{red} e^{i \vec{p} \cdot \vec{x}} \gamma^{5} S_{d}\left(\vec{x}, t_{\text {sep }}; 0,0 \right) \gamma^{5} } \]
+
+\end{document}
